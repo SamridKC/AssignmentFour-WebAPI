@@ -4,6 +4,8 @@ var passport = require('passport');
 var authJwtController = require('./auth_jwt');
 var User = require('./Users');
 var Movie = require('./Movie');
+var Review = require('./Review');
+
 var jwt = require('jsonwebtoken');
 
 var app = express();
@@ -199,5 +201,18 @@ router.route('/movies/Update/:movieId') // Update by Id
         });
     });
 ////
+
+
+// Reviews
+router.route('/review')
+    .get(authJwtController.isAuthenticated, function (req, res) {
+        Review.find(function (err, reviews) {
+            if (err) res.send(err);
+            // return the users
+            res.json(reviews);
+        });
+});
+
+//
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
