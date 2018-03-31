@@ -264,6 +264,15 @@ router.get('/movies/Get', function (req, res) {   //get reviews
         }
 });
 
+router.get('/review/getAll', function (req, res) {   //get reviews
+
+        Review.find(function (err, reviews) {
+            if (err) res.send(err);
+            // return the reviews
+            res.json(reviews);
+        });
+});
+
 
 //db.events.aggregate([{ $lookup: { from: 'users', localField: 'user', foreignField: '_id', as: 'user' } }]).pretty();
 
