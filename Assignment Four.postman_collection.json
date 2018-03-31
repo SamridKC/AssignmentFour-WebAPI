@@ -1,0 +1,599 @@
+{
+	"info": {
+		"name": "Assignment Four",
+		"_postman_id": "a156e840-a1da-10fe-e127-f13990cf8e4b",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Sign up",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "52bf9524-ef58-4fa3-8a07-95adae3a6683",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Has a user been created.\"] = jsonData.message === \"User created!\";",
+							"",
+							"tests[\"Username already exists.\"] = jsonData.message === \"A user with that username already exists. \";",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Samrid3",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "sam3",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://hw4-web-api-samrid.herokuapp.com/signup",
+					"protocol": "https",
+					"host": [
+						"hw4-web-api-samrid",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"signup"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Sign in",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "760e6b90-6566-46f5-bc0e-f5f13380af02",
+						"type": "text/javascript",
+						"exec": [
+							"var jwtToken;",
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set(\"jwtToken\", jsonData.token);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "sam3",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://hw4-web-api-samrid.herokuapp.com/signin",
+					"protocol": "https",
+					"host": [
+						"hw4-web-api-samrid",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"signin"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e58fdaf1-b00e-402a-b83a-1a984eb952a1",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a0aef9f3-0524-45ed-b182-18dff7578758",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{jwtToken}}"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "kcsa",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://hw4-web-api-samrid.herokuapp.com/users/",
+					"protocol": "https",
+					"host": [
+						"hw4-web-api-samrid",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get by User ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b3916cb8-d032-443d-a449-13339a4c4be0",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{jwtToken}}"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "https://hw4-web-api-samrid.herokuapp.com/users/5aa89996f538980004ebdd36",
+					"protocol": "https",
+					"host": [
+						"hw4-web-api-samrid",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"5aa89996f538980004ebdd36"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Save New Movie",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "01d6efbe-8aee-4da5-b3ea-ec4ed88a7bb2",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "adba7070-ece8-4337-81dc-bd697f87f628",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Movie succesfully created.\"] = jsonData.message === \"Movie created!\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{jwtToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Title\" : \"Godfather 7\",\n\t\"Year\" : \"2099\",\n\t\"Genre\" : \"Horror\",\n\t\"Actors\": [\n        {\n            \"ActorName\": \"Al Pacino\",\n            \"CharacterName\": \"Michael\"\n        },\n        {\n            \"ActorName\": \"Marlon Brando\",\n            \"CharacterName\": \"Vito\"\n        },\n        {\n            \"ActorName\": \"James Caan\",\n            \"CharacterName\": \"Sonny\"\n        }\n    ]\n\n}"
+				},
+				"url": {
+					"raw": "https://hw4-web-api-samrid.herokuapp.com/movies/Create",
+					"protocol": "https",
+					"host": [
+						"hw4-web-api-samrid",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"movies",
+						"Create"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get by Movie Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a3d9a109-f0ad-45d3-a77d-66715985c606",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{jwtToken}}"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "https://hw4-web-api-samrid.herokuapp.com/movies/Get/5aa89a76f538980004ebdd3a",
+					"protocol": "https",
+					"host": [
+						"hw4-web-api-samrid",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"movies",
+						"Get",
+						"5aa89a76f538980004ebdd3a"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete by Movie Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "149d75e8-b31c-4016-b9eb-58ed063ba95c",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{jwtToken}}"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "https://hw4-web-api-samrid.herokuapp.com/movies/Delete/5abfde72ca13820004153ccf",
+					"protocol": "https",
+					"host": [
+						"hw4-web-api-samrid",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"movies",
+						"Delete",
+						"5abfde72ca13820004153ccf"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update by Movie Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "830a655f-a552-43d0-8b6a-8600c6841aee",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{jwtToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Title\" : \"Godfather Pt 100\",\n\t\"Year\" : \"2055\",\n\t\"Genre\" : \"Western\",\n\t\"Actors\": [\n        {\n            \"ActorName\": \"Diane Yoha\",\n            \"CharacterName\": \"Michael\"\n        },\n        {\n            \"ActorName\": \"Marlon Brando\",\n            \"CharacterName\": \"Vito\"\n        },\n        {\n            \"ActorName\": \"James Caan\",\n            \"CharacterName\": \"Sonny\"\n        }\n    ]\n\n}"
+				},
+				"url": {
+					"raw": "https://hw4-web-api-samrid.herokuapp.com/movies/Update/5aa89abff538980004ebdd4e",
+					"protocol": "https",
+					"host": [
+						"hw4-web-api-samrid",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"movies",
+						"Update",
+						"5aa89abff538980004ebdd4e"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Write a Review",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "21cd8467-004c-46b6-abd6-cf06c171ec5b",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Review succesfully created.\"] = jsonData.message === \"Review created!\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{jwtToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Movie\" : \"Godfather 2\",\n\t\"Reviewer\" : \"Sam\",\n\t\"Review\" : \"Very good\",\n\t\"Rating\" : \"5\"\n}"
+				},
+				"url": {
+					"raw": "https://hw4-web-api-samrid.herokuapp.com/review/write",
+					"protocol": "https",
+					"host": [
+						"hw4-web-api-samrid",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"review",
+						"write"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all reviews",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://hw4-web-api-samrid.herokuapp.com/review/getAll",
+					"protocol": "https",
+					"host": [
+						"hw4-web-api-samrid",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"review",
+						"getAll"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Movies  with ?reviews=true",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://hw4-web-api-samrid.herokuapp.com/movies/Get?reviews=true",
+					"protocol": "https",
+					"host": [
+						"hw4-web-api-samrid",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"movies",
+						"Get"
+					],
+					"query": [
+						{
+							"key": "reviews",
+							"value": "true",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Movies  with No ?reviews=true",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9a297b16-f98c-4af8-9b86-891c1ceb98ea",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://hw4-web-api-samrid.herokuapp.com/movies/Get",
+					"protocol": "https",
+					"host": [
+						"hw4-web-api-samrid",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"movies",
+						"Get"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
