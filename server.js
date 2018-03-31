@@ -117,18 +117,13 @@ router.route('/movies/Create')  // save/create a new movie
         res.json({success: false, msg: 'Please pass at least three actors.'})
     }
     else {
-//     var Actor = req.body.Actors;
+
        var movie = new Movie();
        movie.Title = req.body.Title;
        movie.Year = req.body.Year;
        movie.Genre = req.body.Genre;
        movie.Actors = req.body.Actors;
-//       movie.content.push(Actor);
-//       movie.Actors.ActorName = req.body.Actors.ActorName;
-//       movie.Actors.CharacterName = req.body.Actors.CharacterName;
-//       movie.Actors.fill(req.body.Actors.ActorName, 0, 0);
-//       movie.Actors.fill(req.body.Actors.CharacterName, 1, 1);
-        // save the movie
+
         movie.save(function(err) {
             if (err) {
                     return res.send(err);
@@ -138,14 +133,14 @@ router.route('/movies/Create')  // save/create a new movie
     }
 });
 
-router.route('/movies/Get')  // Get all
-    .get(authJwtController.isAuthenticated, function (req, res) {
-        Movie.find(function (err, movies) {
-            if (err) res.send(err);
-            // return the users
-            res.json(movies);
-        });
-    });
+// router.route('/movies/Get')  // Get all
+//     .get(authJwtController.isAuthenticated, function (req, res) {
+//         Movie.find(function (err, movies) {
+//             if (err) res.send(err);
+//             // return the users
+//             res.json(movies);
+//         });
+//     });
 
 router.route('/movies/Get/:movieId') // Get by Id
     .get(authJwtController.isAuthenticated, function (req, res) {
@@ -204,14 +199,73 @@ router.route('/movies/Update/:movieId') // Update by Id
 
 
 // Reviews
-router.route('/review')
-    .get(authJwtController.isAuthenticated, function (req, res) {
-        Review.find(function (err, reviews) {
-            if (err) res.send(err);
-            // return the users
-            res.json(reviews);
-        });
+router.route('/review/write')  // save/create a new review
+    .post(authJwtController.isAuthenticated, function (req, res) {
+        if (!req.body.Movie) {
+            res.json({success: false, msg: 'Please pass Movie name. '});
+        }
+
+        if (!req.body.Reviewer) {
+            res.json({success: false, msg: 'Please pass Reviewer name.'});
+        }
+
+        if (!req.body.Review) {
+            res.json({success: false, msg: 'Please pass the review.'});
+        }
+
+        if (!req.body.Rating) {
+                res.json({success: false, msg: 'Please pass the rating.'});
+        }
+
+
+        else {
+            Movie.findOne({Title: req.body.Movie}).select('Title').exec(function (err, result) {
+                if (err) res.send(err);
+
+                if(result) {
+                    var review = new Review();
+                    review.Movie = req.body.Movie;
+                    review.Reviewer = req.body.Reviewer;
+                    review.Review = req.body.Review;
+                    review.Rating = req.body.Rating;
+
+                    review.save(function (err) {
+                        if (err) {
+                            return res.send(err);
+                        }
+                        res.json({message: 'Review created!'});
+                    });
+                }
+                else {
+                    res.status(400);
+                    res.json({message: 'Movie not found in Database. Cannot save review.'});
+               }
+            });
+        }
 });
+
+router.get('/movies/Get', function (req, res) {   //get reviews
+        var id = req.params.movieId;
+        if(req.query.reviews === 'true') {
+            Movie.aggregate([{
+                    $lookup:{ from: "reviews", localField: "Title", foreignField: "Movie", as: 'review'}
+                }
+            ], function (err, result) {
+                if(err) res.send(err);
+                else res.json(result);
+            });
+        }
+        else {
+            Movie.find(function (err, movies) {
+                if (err) res.send(err);
+                // return the users
+                res.json(movies);
+            });
+        }
+});
+
+
+//db.events.aggregate([{ $lookup: { from: 'users', localField: 'user', foreignField: '_id', as: 'user' } }]).pretty();
 
 //
 app.use('/', router);

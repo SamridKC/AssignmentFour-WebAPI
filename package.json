@@ -9,6 +9,7 @@
   "author": "Samrid KC",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.0",
     "bcrypt": "^1.0.3",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
