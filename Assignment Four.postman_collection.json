@@ -454,7 +454,7 @@
 			"response": []
 		},
 		{
-			"name": "Write a Review",
+			"name": "Write a Review (Valid i.e. Movie in DB)",
 			"event": [
 				{
 					"listen": "test",
@@ -487,6 +487,58 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"Movie\" : \"Godfather 2\",\n\t\"Reviewer\" : \"Sam\",\n\t\"Review\" : \"Very good\",\n\t\"Rating\" : \"5\"\n}"
+				},
+				"url": {
+					"raw": "https://hw4-web-api-samrid.herokuapp.com/review/write",
+					"protocol": "https",
+					"host": [
+						"hw4-web-api-samrid",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"review",
+						"write"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Write a Review (Invalid i.e. Movie not  in DB)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "73213269-1200-4f7d-b87d-466ec334dd14",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Review succesfully created.\"] = jsonData.message === \"Movie not found in Database. Cannot save review.\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{jwtToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Movie\" : \"Godfather 55\",\n\t\"Reviewer\" : \"Sam\",\n\t\"Review\" : \"Very good\",\n\t\"Rating\" : \"5\"\n}"
 				},
 				"url": {
 					"raw": "https://hw4-web-api-samrid.herokuapp.com/review/write",
