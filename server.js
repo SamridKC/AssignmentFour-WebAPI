@@ -5,6 +5,8 @@ var authJwtController = require('./auth_jwt');
 var User = require('./Users');
 var Movie = require('./Movie');
 var Review = require('./Review');
+//
+var cors = require('cors');
 
 var jwt = require('jsonwebtoken');
 
@@ -13,6 +15,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(passport.initialize());
+//
+app.use(cors());
 
 var router = express.Router();
 
