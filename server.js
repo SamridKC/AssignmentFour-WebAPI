@@ -117,6 +117,10 @@ router.route('/movies/Create')  // save/create a new movie
         res.json({success: false, msg: 'Please pass Genre.'});
     }
 
+    if (!req.body.ImageUrl) {
+            res.json({success: false, msg: 'Please pass ImageUrl.'});
+        }
+
     if(req.body.Actors.length < 3) {
         res.json({success: false, msg: 'Please pass at least three actors.'})
     }
@@ -126,6 +130,7 @@ router.route('/movies/Create')  // save/create a new movie
        movie.Title = req.body.Title;
        movie.Year = req.body.Year;
        movie.Genre = req.body.Genre;
+       movie.ImageUrl = req.body.ImageUrl;
        movie.Actors = req.body.Actors;
 
         movie.save(function(err) {
@@ -186,6 +191,9 @@ router.route('/movies/Update/:movieId') // Update by Id
             }
             if (req.body.Genre) {
                 movie.Genre = req.body.Genre;
+            }
+            if (req.body.ImageUrl) {
+                movie.ImageUrl = req.body.ImageUrl;
             }
             if (req.body.Actors) {
                 movie.Actors = req.body.Actors;
