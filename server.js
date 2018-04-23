@@ -257,7 +257,7 @@ router.route('/review/write')  // save/create a new review
         }
 });
 
-router.get('/movies/Get', function (req, res) {   //get reviews
+router.get('/movies', function (req, res) {   //get reviews
         var id = req.params.movieId;
         if(req.query.reviews === 'true') {
             Movie.aggregate([{
