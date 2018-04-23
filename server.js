@@ -117,7 +117,7 @@ router.route('/movies/Create')  // save/create a new movie
         res.json({success: false, msg: 'Please pass Genre.'});
     }
 
-    if (!req.body.ImageUrl) {
+    if (!req.body.imageUrl) {
             res.json({success: false, msg: 'Please pass ImageUrl.'});
         }
 
@@ -130,7 +130,7 @@ router.route('/movies/Create')  // save/create a new movie
        movie.Title = req.body.Title;
        movie.Year = req.body.Year;
        movie.Genre = req.body.Genre;
-       movie.ImageUrl = req.body.ImageUrl;
+       movie.imageUrl = req.body.imageUrl;
        movie.Actors = req.body.Actors;
 
         movie.save(function(err) {
@@ -163,6 +163,7 @@ router.route('/movies/Get/:movieId') // Get by Id
         });
     });
 
+
 router.route('/movies/Delete/:movieId') // Delete by Id
     .delete(authJwtController.isAuthenticated, function (req, res) {
         var id = req.params.movieId;
@@ -192,8 +193,8 @@ router.route('/movies/Update/:movieId') // Update by Id
             if (req.body.Genre) {
                 movie.Genre = req.body.Genre;
             }
-            if (req.body.ImageUrl) {
-                movie.ImageUrl = req.body.ImageUrl;
+            if (req.body.imageUrl) {
+                movie.imageUrl = req.body.imageUrl;
             }
             if (req.body.Actors) {
                 movie.Actors = req.body.Actors;
