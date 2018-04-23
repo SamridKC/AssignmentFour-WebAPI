@@ -6,6 +6,14 @@ const GENRES = ["Action", "Adventure", "Comedy", "Drama", "Fantasy", "Horror", "
 
 mongoose.connect(process.env.DB);
 
+
+//*************
+var ActorSchema = new Schema({
+    ActorName: { type: String, required: true},
+    CharacterName: { type: String, required: true}
+});
+//**************
+
 // Movie schema
 var MovieSchema = new Schema({
     // name: String,
@@ -15,13 +23,13 @@ var MovieSchema = new Schema({
     Year: { type: String, required: true},
     Genre: { type: String, required: true, enum: GENRES},
     imageUrl: { type: String, required: true},
-    Actors: [
-        {
-            ActorName: String,
-            CharacterName: String
-        }
-    ]
-
+    // Actors: [
+    //     {
+    //         ActorName: String,
+    //         CharacterName: String
+    //     }
+    // ]
+    Actors: [ActorSchema]
 });
 
 
